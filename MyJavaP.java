@@ -1,105 +1,105 @@
-package com.objectfrontier.training.demo;
+package com.ofs.training;
 
 import java.lang.reflect.Modifier;
 
 public class MyJavaP {
 
-    private void run(String[] args) throws Exception {
-        // get classname
-        String className = args[0];
+    public static void main(String[] args) {
 
-        // load class
-        Class clazz = loadClass(className);
-
-        // print class details
+        String classPackage = args[0];
+        Class clazz= loadClass(classPackage);
         printClassDetails(clazz);
     }
 
-    private void printClassDetails(Class clazz) {
-        // print compilation source
-        // Compiled from "String.java"
-        log("Compiled from \"%s.java", clazz.getSimpleName());
+	private static void printClassDetails(Class clazz) {
+		
+		System.out.println("Compiled from " + "\"" + clazz.getSimpleName() + ".java" + "\"");
+		
+		//print superclass
+		printSuperClass(clazz);
+		
+		//print Interfaces
+		printInterface(clazz);
+		
+		//print Constructors
+		printConstructor(clazz);
+		
+		//print Fields
+		printField(clazz);
+		
+		//print Methods
+		printMethod(clazz);
+		
+	}
 
-        // print class header
-        printClassHeader(clazz);
+	private static void printSuperClass(Class clazz) {
 
-        // print fields
-        // print constructors
-        // print methods
-        // print inner classes
-        // print class footer
-    }
+		Class<?> classSuperClass = clazz.getSuperclass();
+		
+			StringBuilder sb =  new StringBuilder();
+				sb.append(classSuperClass);
+				System.out.println("," + sb );
+	}
 
-    private void printClassHeader(Class clazz) {
-        // public final class java.lang.String implements java.io.Serializable, java.lang.Comparable<java.lang.String>, java.lang.Ch
-        int modifier = clazz.getModifiers();
-        String modifierPart = parseModifier(modifier);
-        String  qualifiedClassName = clazz.getName();
-        String inheritanceDetails = getInheritanceDetails(clazz);
-        log("%s class %s %s", modifierPart, qualifiedClassName , inheritanceDetails );
-    }
+	private static void printMethod(Class clazz) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    private String getInheritanceDetails(Class clazz) {
+	private static void printField(Class clazz) {
+		// TODO Auto-generated method stub
+		
+	}
 
-        StringBuilder sb = new StringBuilder();
+	private static void printConstructor(Class clazz) {
+		// TODO Auto-generated method stub
+		
+	}
 
-        // if available, add implemented interfaces
-        Class[] interfaces = clazz.getInterfaces();
-        if (interfaces.length > 0) { sb.append("implements "); }
-        for (Class intf : interfaces) {
-            sb.append(intf.getName()).append(", ");
-        }
-        sb.replace(sb.length() - 2, sb.length(), "");
+	private static void printInterface(Class clazz) {
+		
+		//getModifier()
+		int modifier = clazz.getModifiers();
+		String classModifier = getModifier(modifier);
+		System.out.println(classModifier + "class " + clazz.getName());
+		
+		Class<?> classInterfaces[] = clazz.getInterfaces();
+		if (classInterfaces.length > 0) {
+			
+			System.out.println("implements");
+			
+			StringBuilder sb =  new StringBuilder();
+			for ( Class<?> classInterface : classInterfaces) {
+				sb.append(classInterface);
+				System.out.println("," + sb );
+			}
+		}
+	}
 
-        // if available, add extended Class
-        Class superClass = clazz.getSuperclass();
-        if (superClass != null) {
-            if (interfaces.length > 0) { sb.append(" "); }
-            sb.append("extebds ").append(superClass.getName());
-        }
+	private static String getModifier(int modifier) {
+		// TODO Auto-generated method stub
+		
+		StringBuilder sb = new StringBuilder();
+		Modifier mod = new Modifier();
+		if(mod.isPrivate(modifier))   { sb.append("Private"); }
+		if(mod.isProtected(modifier)) { sb.append("Protected"); }
+		if(mod.isPublic(modifier))    { sb.append("Public"); }
+		if(mod.isFinal(modifier))     { sb.append("Final"); }
+		if(mod.isStatic(modifier))    { sb.append("Static"); }
+		
+		return sb.toString();
+	}
 
-        return sb.toString();
-    }
+	private static Class loadClass(String myPackage) {
 
-    private String parseModifier(int modifier) {
+		try {
+		
+			Class myClassName =  Class.forName(myPackage);
+			return myClassName;
+		} catch (ClassNotFoundException e) {
+			
+			throw new RuntimeException(e);
+		}
+	}
 
-        StringBuilder sb = new StringBuilder();
-
-        if (Modifier.isPrivate(modifier))   {  sb.append("private"); }
-        if (Modifier.isPublic(modifier))    {  sb.append("public"); }
-        if (Modifier.isProtected(modifier)) {  sb.append("protected"); }
-
-        if (Modifier.isFinal(modifier)) {  sb.append(" final"); }
-        if (Modifier.isStatic(modifier)) {  sb.append(" static"); }
-        if (Modifier.isAbstract(modifier)) {  sb.append(" abstract"); }
-        if (Modifier.isSynchronized(modifier)) {  sb.append(" synchronized"); }
-        if (Modifier.isTransient(modifier)) {  sb.append(" transient"); }
-
-        return sb.toString();
-    }
-
-    private Class loadClass(String className) {
-        try {
-            return Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Unable to load class : " + className);
-        }
-    }
-
-    public static void main(String[] args) {
-        try {
-            MyJavaP o = new MyJavaP();
-            o.run(args);
-        } catch (Throwable t) {
-            log(t);
-        }
-    }
-
-    private static void log(Throwable t) {
-        t.printStackTrace(System.err);
-    }
-
-    private static void log(String format, String... vals) {
-        System.out.format(format, vals);
-    }
 }
