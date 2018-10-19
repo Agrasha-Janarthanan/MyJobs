@@ -1,58 +1,83 @@
-package com.objectfrontier.training.java.jdbc;
+package com.objectfrontier.training.service;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Time;
+import java.text.MessageFormat;
+import java.util.List;
 
-import com.mysql.jdbc.PreparedStatement;
-
+/**
+ * @author Lokesh.
+ * @since Sep 21, 2018
+ */
 public class PersonService {
 
-    Person person = new Person();
-    AddressService addressService = new AddressService();
+    private ConnectionManager connectionManager;
+    private PersonDAO personDBManager;
 
-    public Connection openConnection() {
-
-        Connection conn = null;
-        try {
-
-            String url = "jdbc:mysql://pc1620:3306/agrasha_janarthanan?useSSL=false";
-
-            String userName = "agrasha_janarthanan";
-            String password = "demo";
-
-            conn = DriverManager.getConnection(url, userName, password);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-        return conn;
+    public PersonService(Connection connection) {
+        this.connectionManager = new ConnectionManager(connection);
+        this.personDBManager = new PersonDBManager(connectionManager);
     }
 
-    public int createRecord(String name, String email, Date birthDate, Time createdDate, long addressId, String street, String city, long pincode) throws Exception {
-
-        Connection conn = openConnection();
-        StringBuilder sb = new StringBuilder();
-        sb.append("INSERT INTO person (name, email, birth_date, created_date, address_id)");
-        sb.append("VALUES (?, ?, ?, ?, ?)");
-        int rowsAffected = 0;
-
-        try {
-            PreparedStatement statement = (PreparedStatement) conn.prepareStatement(sb.toString());
-            statement.setString(1, name);
-            statement.setString(2, email);
-            statement.setDate(3, birthDate);
-            statement.setTime(4, createdDate);
-            statement.setLong(5, addressId);
-            rowsAffected = statement.executeUpdate();
-            addressId = addressService.createRecord(street, city, pincode);
-            conn.close();
-        } catch (SQLException exception) {
-            throw new RuntimeException("Email already exists");
-        }
-        return rowsAffected;
+    public PersonService(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
+        this.personDBManager = new PersonDBManager(connectionManager);
     }
 
-    public 
+    public long insert(Person person) throws AppException {
+        long id = 0;
+        validatePerson(person);
+        id = personDBManager.insert(person);
+        return id;
+    }
+
+    public Person read(int id, boolean includeAddress) throws AppException {
+        validatePersonId(id);
+        return personDBManager.read(id, includeAddress);
+    }
+
+    public int delete(int id) throws AppException {
+        validatePersonId(id);
+        return personDBManager.delete(id);
+    }
+
+    public int update(Person person) throws AppException {
+        validatePersonId(person.getId());
+        validatePerson(person);
+        return personDBManager.update(person);
+    }
+
+    public List<Person> readAll() throws AppException {
+        return personDBManager.readAll();
+    }
+
+    private void validatePerson(Person person) throws AppException {
+        int throwException = 0;
+        AppException dataBaseException = new AppException();
+        if (person.getName() == null) {
+            dataBaseException.add(new AppException("Name cannot be Empty"));
+            throwException++;
+        }
+        if (person.getBirthDate() == null) {
+            dataBaseException.add(new AppException("Birthday field cannot be empty"));
+            throwException++;
+        }
+        if (person.getEmail() == null) {
+            dataBaseException.add(new AppException("Email Cannot be Null"));
+            throwException++;
+        }
+        if (personDBManager.isPresent("email", person.getEmail())) {
+            dataBaseException.add(new AppException("Email id already exists"));
+            throwException++;
+        }
+        if (throwException > 0) {
+            throw dataBaseException;
+        }
+    }
+
+    public void validatePersonId(long id) throws AppException {
+        if (! personDBManager.isPresent("id", id)) {
+            throw new AppException(MessageFormat.format("person with {0} is not in the database", id));
+        }
+    }
+
 }
