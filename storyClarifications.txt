@@ -1,0 +1,25 @@
+Searching with Regex - Either it has to be done by UI or backend?
+                       Backend
+
+Validation - Is the Get call necessary?
+                Not necessary(but necessary for CRUD)
+             Whether the value is send as path param?
+                yes
+             Can we set the path param as null?
+                If possible we have to do string validation
+
+Sending Response - what will be the response code when the response is empty set?
+                    Response code will be 204-No content found
+
+Exception handling
+                    Changes once Global exception handling is done
+
+CRUD APIs for Role
+                    Seperated among Agrasha, Abhishek, Ramachandran
+
+Assigning roles to the user
+    Update:
+        what will be the input? - User(Object)
+    Delete:
+        what will be the output? - Will be Discuss on Monday
+        But the response will be 204 - No Content Found

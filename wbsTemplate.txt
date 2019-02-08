@@ -1,0 +1,25 @@
+WBS TEMPLATE
+
+Requirements:
+    problem statement of the given story
+
+Inferred Requirements:
+    specify the entities which are used in this story
+
+Jobs to be done:
+    Mention what jobs have to be carried out
+
+Possible Scenarios:
+    List out all the possible scenarios(to cover all the scenarios and exception)
+
+Implementation Plan:
+    Specify the complete implementation of the identified jobs with respect to the possible scenarios
+
+Sequence Diagram :
+    Establish the flow
+
+API Contract :(use CURL)
+    Request
+    Response
+    specify the URL("localhost:8080\land\...\search")
+

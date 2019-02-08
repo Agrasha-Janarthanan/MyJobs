@@ -1,0 +1,43 @@
+WBS
+
+Problem Statement :
+    To develop the Search API for User Entity
+
+Inferred Requirements :
+    1.Users List
+
+Input : String
+Output : List of Users
+
+Jobs to be done :
+    1.Get the input
+    2.Validate the values
+    3.Search for the record based on the given input
+    4.Store the result as an object
+    5.Return the object
+
+Possible Scenarios:
+
+1.when the given string is "id":
+    1.Get the user_id by separating the values based on regex(,)
+    2.Validate the value for null value
+    3.Create a new List with type as user
+    4.Create a new user object
+    3.Search the user details based on the given user_id
+    4.Set the obtained user details in a user object
+    5.Add the user object to the list
+    6.Return the list
+
+2.when the given string is "name"
+    1.Get the name by separating the values based on regex(,)
+    2.Validate the value for empty string
+    3.Create a new List with type as user
+    4.Create a new user object
+    3.Search the user details based on the given name from both the first name and last name
+        3.a.If there is only one user in the given name, return it
+        3.b.If there are multiple users in the given name, store it by iterating using for each loop
+    4.Set the obtained user details in a user object
+    5.Add the user object to the list
+    6.Return the list
+
+3.when given strin

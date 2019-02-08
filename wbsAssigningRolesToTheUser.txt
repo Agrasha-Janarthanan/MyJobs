@@ -1,0 +1,64 @@
+WBS
+
+Requirements:
+    To assign roles to the user
+
+Inferred Requirements:
+    1.Users
+    2.Roles
+    3.Course
+
+Possible Scenarios:
+1.Searching Users(using Id,first name,last name):
+    Input : User(Object)
+    Output : User(object)
+    Jobs to be done :
+        1.Get the Input values
+        2.Separate the input values using regex(,)
+        2.Validate the values
+        3.Search the values based on the inputs
+            3.a.If the given value is "id" -> the search result will be corresponding to that id
+            3.b.If the given value is "name" -> the search result will be corresponding to the user's first name and last name
+            3.c.If the given value is both "id" and "name" -> the search resuult will be corresponding to both the user id and their name
+            3.d.If the given value does not match -> the search result will be "null"
+            3.e.If the given value is not alphanumeric -> the exception will be thrown(validation)
+        4.Store the result as an object
+        5.Return the object
+
+2.Assigning the roles to the users
+        Input : User(Object), Role
+        Output : User(Object)
+        Jobs to be done :
+            1.Get the Input values
+            2.validate the values
+            3.Set the role to the user
+            4.update the values in the object
+            5.Return the object
+
+3.Read the details
+            Input : User(object)
+            Output : User(object)
+            Jobs to be done :
+                1.Get the input values
+                2.validate the values
+                3.Read the corresponding values
+                4.Store the values
+                5.Return the object
+
+4.Reading all details
+            Input : Nil
+            Output : List of users
+            Jobs to be done :
+                1.Read the entire user details
+                2.Store the details as a list of objects
+                3.Return the list
+
+5.Delete the details
+            Input : User(Object)
+            Output : User(Object)
+            Jobs to be done :
+                1.Get the id from the input
+                2.Read the corresponding details of the id
+                3.store it in an object
+                4.Delete the details
+                5.Return the object
